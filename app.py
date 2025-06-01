@@ -2,13 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# Configuración de la página (DEBE IR AL INICIO)
-st.set_page_config(
-    page_title="🌿 Finca Luna Nueva Lodge - Miami",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
 # URLs de los archivos CSV en GitHub Raw
 mercado_hotelero_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/mercado_hotelero.csv"
 submercados_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/submercados.csv"
@@ -22,13 +15,13 @@ ubicacion_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMi
 @st.cache_data
 def load_data():
     try:
-        mercado_hotelero = pd.read_csv(mercado_hotelero_url, encoding="latin1")
-        submercados = pd.read_csv(submercados_url, encoding="latin1")
-        visitantes = pd.read_csv(visitantes_url, encoding="latin1")
-        financiamiento = pd.read_csv(financiamiento_url, encoding="latin1")
-        marketing_roi = pd.read_csv(marketing_roi_url, encoding="latin1")
-        clientes = pd.read_csv(clientes_url, encoding="latin1")
-        ubicacion = pd.read_csv(ubicacion_url, encoding="latin1")
+        mercado_hotelero = pd.read_csv(mercado_hotelero_url)
+        submercados = pd.read_csv(submercados_url)
+        visitantes = pd.read_csv(visitantes_url)
+        financiamiento = pd.read_csv(financiamiento_url)
+        marketing_roi = pd.read_csv(marketing_roi_url)
+        clientes = pd.read_csv(clientes_url)
+        ubicacion = pd.read_csv(ubicacion_url)
         return mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion
     except Exception as e:
         st.error(f"Error cargando datos: {e}")
@@ -36,6 +29,13 @@ def load_data():
 
 data = load_data()
 mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion = data
+
+# Configuración de la página
+st.set_page_config(
+    page_title="🌿 Finca Luna Nueva Lodge - Miami",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Título principal
 st.title("Finca Luna Nueva Lodge - Expansión a Miami")
@@ -59,7 +59,7 @@ with col2:
     fig2 = px.pie(
         submercados,
         names="Zona",
-        values="Porcentaje",
+        values="Porcentaje (%)",
         title="Distribución por Zona (2025)"
     )
     st.plotly_chart(fig2, use_container_width=True)
