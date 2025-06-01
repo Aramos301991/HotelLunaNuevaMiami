@@ -2,7 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# URLs de los archivos CSV en GitHub Raw
+# ✅ Configuración de la página (debe ir antes de cualquier otro st.*)
+st.set_page_config(
+    page_title="🌿 Finca Luna Nueva Lodge - Miami",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# 🌐 URLs de los archivos CSV en GitHub Raw
 mercado_hotelero_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/mercado_hotelero.csv"
 submercados_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/submercados.csv"
 visitantes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/ubicacion.csv"
@@ -11,7 +18,7 @@ marketing_roi_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNue
 clientes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/clientes.csv"
 ubicacion_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/ubicacion.csv"
 
-# Carga de datos desde GitHub
+# 📥 Carga de datos desde GitHub
 @st.cache_data
 def load_data():
     try:
@@ -27,17 +34,11 @@ def load_data():
         st.error(f"Error cargando datos: {e}")
         return None, None, None, None, None, None, None
 
+# ✅ Carga los datos
 data = load_data()
 mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion = data
 
-# Configuración de la página
-st.set_page_config(
-    page_title="🌿 Finca Luna Nueva Lodge - Miami",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-# Título principal
+# 🏷️ Título principal
 st.title("Finca Luna Nueva Lodge - Expansión a Miami")
 st.markdown("Dashboard interactivo para el análisis de mercado y estrategia de expansión")
 
@@ -137,7 +138,7 @@ fig4 = px.bar(
 )
 st.plotly_chart(fig4, use_container_width=True)
 
-# --- Datos completos ---
+# --- Datos completos (opcional) ---
 with st.expander("📁 Ver todos los datos crudos"):
     tabs = st.tabs(["Mercado Hotelero", "Visitantes", "Financiamiento", "Clientes", "Ubicación"])
     with tabs[0]:
