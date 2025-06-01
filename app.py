@@ -2,6 +2,13 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# Configuración de la página DEBE SER PRIMERO
+st.set_page_config(
+    page_title="🌿 Finca Luna Nueva Lodge - Miami",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 # URLs corregidas (sin '/blob')
 mercado_hotelero_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/mercado_hotelero.csv"
 submercados_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/submercados.csv"
@@ -32,19 +39,14 @@ def load_data():
         st.error(f"Error cargando datos: {str(e)}")
         return None, None, None, None, None, None, None
 
+# Título principal (después de set_page_config)
+st.title("Finca Luna Nueva Lodge - Expansión a Miami")
+st.markdown("Dashboard interactivo para el análisis de mercado y estrategia de expansión")
+
+# Carga de datos
 data = load_data()
 mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion = data
 
-# Configuración de la página
-st.set_page_config(
-    page_title="🌿 Finca Luna Nueva Lodge - Miami",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-# Título principal
-st.title("Finca Luna Nueva Lodge - Expansión a Miami")
-st.markdown("Dashboard interactivo para el análisis de mercado y estrategia de expansión")
 
 # --- Sección 1: Mercado Hotelero ---
 st.header("📊 Mercado Hotelero en Miami")
