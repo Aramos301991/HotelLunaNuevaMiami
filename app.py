@@ -22,17 +22,18 @@ ubicacion_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMi
 @st.cache_data
 def load_data():
     try:
-        mercado_hotelero = pd.read_csv(mercado_hotelero_url)
-        submercados = pd.read_csv(submercados_url)
-        visitantes = pd.read_csv(visitantes_url)
-        financiamiento = pd.read_csv(financiamiento_url)
-        marketing_roi = pd.read_csv(marketing_roi_url)
-        clientes = pd.read_csv(clientes_url)
-        ubicacion = pd.read_csv(ubicacion_url)
+        mercado_hotelero = pd.read_csv(mercado_hotelero_url, encoding="latin1")
+        submercados = pd.read_csv(submercados_url, encoding="latin1")
+        visitantes = pd.read_csv(visitantes_url, encoding="latin1")
+        financiamiento = pd.read_csv(financiamiento_url, encoding="latin1")
+        marketing_roi = pd.read_csv(marketing_roi_url, encoding="latin1")
+        clientes = pd.read_csv(clientes_url, encoding="latin1")
+        ubicacion = pd.read_csv(ubicacion_url, encoding="latin1")
         return mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion
     except Exception as e:
         st.error(f"Error cargando datos: {e}")
         return None, None, None, None, None, None, None
+
 
 # ✅ Carga los datos
 data = load_data()
