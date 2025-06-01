@@ -3,13 +3,13 @@ import pandas as pd
 import plotly.express as px
 
 # URLs de los archivos CSV en GitHub Raw (¡Actualiza con tus URLs reales!)
-mercado_hotelero_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/blob/main/mercado_hotelero.csv"
-submercados_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/blob/main/submercados.csv"
-visitantes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/blob/main/ubicacion.csv"
-financiamiento_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/blob/main/financiamiento.csv"
-marketing_roi_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/blob/main/marketing_roi.csv"
-clientes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/blob/main/clientes.csv"
-ubicacion_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/blob/main/ubicacion.csv"
+mercado_hotelero_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/mercado_hotelero.csv"
+submercados_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/submercados.csv"
+visitantes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/ubicacion.csv"
+financiamiento_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/financiamiento.csv"
+marketing_roi_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/marketing_roi.csv"
+clientes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/clientes.csv"
+ubicacion_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/ubicacion.csv"
 
 # Carga de datos desde GitHub
 @st.cache_data
