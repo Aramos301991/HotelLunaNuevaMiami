@@ -33,7 +33,14 @@ def load_data():
     except Exception as e:
         st.error(f"Error cargando datos: {e}")
         return None, None, None, None, None, None, None
-
+        
+st.write("Columnas mercado_hotelero:", mercado_hotelero.columns.tolist())
+st.write("Columnas submercados:", submercados.columns.tolist())
+st.write("Columnas visitantes:", visitantes.columns.tolist())
+st.write("Columnas financiamiento:", financiamiento.columns.tolist())
+st.write("Columnas marketing_roi:", marketing_roi.columns.tolist())
+st.write("Columnas clientes:", clientes.columns.tolist())
+st.write("Columnas ubicacion:", ubicacion.columns.tolist())
 
 # ✅ Carga los datos
 data = load_data()
