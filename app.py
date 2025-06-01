@@ -2,109 +2,104 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# ✅ Configuración de la página (debe ir antes de cualquier otro st.*)
+# URLs corregidas (sin '/blob')
+mercado_hotelero_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/mercado_hotelero.csv"
+submercados_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/submercados.csv"
+visitantes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/visitantes.csv"
+financiamiento_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/financiamiento.csv"
+marketing_roi_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/marketing_roi.csv"
+clientes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/clientes.csv"
+ubicacion_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/ubicacion.csv"
+
+@st.cache_data
+def load_data():
+    try:
+        # Carga los datos
+        mercado_hotelero = pd.read_csv(mercado_hotelero_url)
+        submercados = pd.read_csv(submercados_url)
+        visitantes = pd.read_csv(visitantes_url)
+        financiamiento = pd.read_csv(financiamiento_url)
+        marketing_roi = pd.read_csv(marketing_roi_url)
+        clientes = pd.read_csv(clientes_url)
+        ubicacion = pd.read_csv(ubicacion_url)
+        
+        # Conversión de tipos de datos
+        visitantes['Millones'] = visitantes['Millones'].astype(float)
+        
+        return mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion
+        
+    except Exception as e:
+        st.error(f"Error cargando datos: {str(e)}")
+        return None, None, None, None, None, None, None
+
+data = load_data()
+mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion = data
+
+# Configuración de la página
 st.set_page_config(
     page_title="🌿 Finca Luna Nueva Lodge - Miami",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# 🌐 URLs de los archivos CSV en GitHub Raw
-mercado_hotelero_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/mercado_hotelero.csv"
-submercados_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/submercados.csv"
-visitantes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/ubicacion.csv"
-financiamiento_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/financiamiento.csv"
-marketing_roi_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/marketing_roi.csv"
-clientes_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/clientes.csv"
-ubicacion_url = "https://raw.githubusercontent.com/Aramos301991/HotelLunaNuevaMiami/main/ubicacion.csv"
-
-# 📥 Carga de datos desde GitHub
-@st.cache_data
-def load_data():
-    try:
-        mercado_hotelero = pd.read_csv(mercado_hotelero_url, encoding="latin1")
-        submercados = pd.read_csv(submercados_url, encoding="latin1")
-        visitantes = pd.read_csv(visitantes_url, encoding="latin1")
-        financiamiento = pd.read_csv(financiamiento_url, encoding="latin1")
-        marketing_roi = pd.read_csv(marketing_roi_url, encoding="latin1")
-        clientes = pd.read_csv(clientes_url, encoding="latin1")
-        ubicacion = pd.read_csv(ubicacion_url, encoding="latin1")
-        return mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion
-    except Exception as e:
-        st.error(f"Error cargando datos: {e}")
-        return None, None, None, None, None, None, None
-
-# ✅ Carga los datos primero
-mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion = load_data()
-
-# Solo mostrar las columnas si los datos cargaron correctamente
-if mercado_hotelero is not None:
-    st.write("Columnas mercado_hotelero:", mercado_hotelero.columns.tolist())
-if submercados is not None:
-    st.write("Columnas submercados:", submercados.columns.tolist())
-if visitantes is not None:
-    st.write("Columnas visitantes:", visitantes.columns.tolist())
-if financiamiento is not None:
-    st.write("Columnas financiamiento:", financiamiento.columns.tolist())
-if marketing_roi is not None:
-    st.write("Columnas marketing_roi:", marketing_roi.columns.tolist())
-if clientes is not None:
-    st.write("Columnas clientes:", clientes.columns.tolist())
-if ubicacion is not None:
-    st.write("Columnas ubicacion:", ubicacion.columns.tolist())
-
-# 🏷️ Título principal
+# Título principal
 st.title("Finca Luna Nueva Lodge - Expansión a Miami")
 st.markdown("Dashboard interactivo para el análisis de mercado y estrategia de expansión")
 
 # --- Sección 1: Mercado Hotelero ---
-if mercado_hotelero is not None and submercados is not None:
-    st.header("📊 Mercado Hotelero en Miami")
-    col1, col2 = st.columns(2)
+st.header("📊 Mercado Hotelero en Miami")
+col1, col2 = st.columns(2)
 
-    with col1:
-        fig1 = px.line(
-            mercado_hotelero,
-            x="Año",
-            y="Habitaciones",
-            title="Inventario de Habitaciones (2023-2025)",
-            markers=True
-        )
-        st.plotly_chart(fig1, use_container_width=True)
+with col1:
+    fig1 = px.line(
+        mercado_hotelero,
+        x="Año",
+        y="Habitaciones",
+        title="Inventario de Habitaciones (2023-2025)",
+        markers=True
+    )
+    st.plotly_chart(fig1, use_container_width=True)
 
-    with col2:
-        fig2 = px.pie(
-            submercados,
-            names="Zona",
-            values="Porcentaje (%)",
-            title="Distribución por Zona (2025)"
-        )
-        st.plotly_chart(fig2, use_container_width=True)
+with col2:
+    fig2 = px.pie(
+        submercados,
+        names="Zona",
+        values="Porcentaje (%)",  # Nombre exacto de la columna
+        title="Distribución por Zona (2025)"
+    )
+    st.plotly_chart(fig2, use_container_width=True)
 
 # --- Sección 2: Visitantes y Financiamiento ---
-if visitantes is not None and financiamiento is not None:
-    st.header("👥 Demanda Turística")
-    tab1, tab2 = st.tabs(["Visitantes", "Financiamiento"])
+st.header("👥 Demanda Turística")
+tab1, tab2 = st.tabs(["Visitantes", "Financiamiento"])
 
-    with tab1:
-        fig3 = px.bar(
-            visitantes,
-            x="Tipo",
-            y="Millones",
-            color="Tipo",
-            title="Turistas en Miami (2023)"
-        )
-        st.plotly_chart(fig3, use_container_width=True)
+with tab1:
+    # Convertir millones a formato correcto
+    visitantes['Millones'] = visitantes['Millones'] / 1000  # Convierte a millones
+    
+    fig3 = px.bar(
+        visitantes,
+        x="Tipo",
+        y="Millones",
+        color="Tipo",
+        title="Turistas en Miami (2023)",
+        labels={"Millones": "Visitantes (millones)"}
+    )
+    st.plotly_chart(fig3, use_container_width=True)
 
-    with tab2:
-        st.dataframe(
-            financiamiento,
-            column_config={
-                "Fuente": "Fuente de Financiamiento",
-                "Tasa (%)": st.column_config.NumberColumn("Tasa de Interés", format="%.2f%%")
-            },
-            hide_index=True
-        )
+with tab2:
+    st.dataframe(
+        financiamiento,
+        column_config={
+            "Fuente": "Fuente de Financiamiento",
+            "Tasa (%)": st.column_config.NumberColumn("Tasa de Interés", format="%.2f%%")
+        },
+        hide_index=True,
+        use_container_width=True
+    )
+
+# --- Resto de tu código (secciones de clientes, ubicación, etc.) ---
+# ... (mantén las otras secciones igual)
 
 # --- Sección 3: Perfil de Clientes ---
 if clientes is not None:
