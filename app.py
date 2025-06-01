@@ -33,132 +33,149 @@ def load_data():
     except Exception as e:
         st.error(f"Error cargando datos: {e}")
         return None, None, None, None, None, None, None
-        
-st.write("Columnas mercado_hotelero:", mercado_hotelero.columns.tolist())
-st.write("Columnas submercados:", submercados.columns.tolist())
-st.write("Columnas visitantes:", visitantes.columns.tolist())
-st.write("Columnas financiamiento:", financiamiento.columns.tolist())
-st.write("Columnas marketing_roi:", marketing_roi.columns.tolist())
-st.write("Columnas clientes:", clientes.columns.tolist())
-st.write("Columnas ubicacion:", ubicacion.columns.tolist())
 
-# ✅ Carga los datos
-data = load_data()
-mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion = data
+# ✅ Carga los datos primero
+mercado_hotelero, submercados, visitantes, financiamiento, marketing_roi, clientes, ubicacion = load_data()
+
+# Solo mostrar las columnas si los datos cargaron correctamente
+if mercado_hotelero is not None:
+    st.write("Columnas mercado_hotelero:", mercado_hotelero.columns.tolist())
+if submercados is not None:
+    st.write("Columnas submercados:", submercados.columns.tolist())
+if visitantes is not None:
+    st.write("Columnas visitantes:", visitantes.columns.tolist())
+if financiamiento is not None:
+    st.write("Columnas financiamiento:", financiamiento.columns.tolist())
+if marketing_roi is not None:
+    st.write("Columnas marketing_roi:", marketing_roi.columns.tolist())
+if clientes is not None:
+    st.write("Columnas clientes:", clientes.columns.tolist())
+if ubicacion is not None:
+    st.write("Columnas ubicacion:", ubicacion.columns.tolist())
 
 # 🏷️ Título principal
 st.title("Finca Luna Nueva Lodge - Expansión a Miami")
 st.markdown("Dashboard interactivo para el análisis de mercado y estrategia de expansión")
 
 # --- Sección 1: Mercado Hotelero ---
-st.header("📊 Mercado Hotelero en Miami")
-col1, col2 = st.columns(2)
+if mercado_hotelero is not None and submercados is not None:
+    st.header("📊 Mercado Hotelero en Miami")
+    col1, col2 = st.columns(2)
 
-with col1:
-    fig1 = px.line(
-        mercado_hotelero,
-        x="Año",
-        y="Habitaciones",
-        title="Inventario de Habitaciones (2023-2025)",
-        markers=True
-    )
-    st.plotly_chart(fig1, use_container_width=True)
+    with col1:
+        fig1 = px.line(
+            mercado_hotelero,
+            x="Año",
+            y="Habitaciones",
+            title="Inventario de Habitaciones (2023-2025)",
+            markers=True
+        )
+        st.plotly_chart(fig1, use_container_width=True)
 
-with col2:
-    fig2 = px.pie(
-        submercados,
-        names="Zona",
-        values="Porcentaje (%)",
-        title="Distribución por Zona (2025)"
-    )
-    st.plotly_chart(fig2, use_container_width=True)
+    with col2:
+        fig2 = px.pie(
+            submercados,
+            names="Zona",
+            values="Porcentaje (%)",
+            title="Distribución por Zona (2025)"
+        )
+        st.plotly_chart(fig2, use_container_width=True)
 
 # --- Sección 2: Visitantes y Financiamiento ---
-st.header("👥 Demanda Turística")
-tab1, tab2 = st.tabs(["Visitantes", "Financiamiento"])
+if visitantes is not None and financiamiento is not None:
+    st.header("👥 Demanda Turística")
+    tab1, tab2 = st.tabs(["Visitantes", "Financiamiento"])
 
-with tab1:
-    fig3 = px.bar(
-        visitantes,
-        x="Tipo",
-        y="Millones",
-        color="Tipo",
-        title="Turistas en Miami (2023)"
-    )
-    st.plotly_chart(fig3, use_container_width=True)
+    with tab1:
+        fig3 = px.bar(
+            visitantes,
+            x="Tipo",
+            y="Millones",
+            color="Tipo",
+            title="Turistas en Miami (2023)"
+        )
+        st.plotly_chart(fig3, use_container_width=True)
 
-with tab2:
-    st.dataframe(
-        financiamiento,
-        column_config={
-            "Fuente": "Fuente de Financiamiento",
-            "Tasa (%)": st.column_config.NumberColumn("Tasa de Interés", format="%.2f%%")
-        },
-        hide_index=True
-    )
+    with tab2:
+        st.dataframe(
+            financiamiento,
+            column_config={
+                "Fuente": "Fuente de Financiamiento",
+                "Tasa (%)": st.column_config.NumberColumn("Tasa de Interés", format="%.2f%%")
+            },
+            hide_index=True
+        )
 
 # --- Sección 3: Perfil de Clientes ---
-st.header("🎯 Segmentación de Clientes")
-st.dataframe(
-    clientes,
-    column_config={
-        "Categoría": "Perfil",
-        "Detalle": "Características"
-    },
-    hide_index=True,
-    use_container_width=True
-)
+if clientes is not None:
+    st.header("🎯 Segmentación de Clientes")
+    st.dataframe(
+        clientes,
+        column_config={
+            "Categoría": "Perfil",
+            "Detalle": "Características"
+        },
+        hide_index=True,
+        use_container_width=True
+    )
 
 # --- Sección 4: Ubicación (Redland) ---
-st.header("📍 Ubicación Propuesta: Redland")
-col1, col2 = st.columns(2)
+if ubicacion is not None:
+    st.header("📍 Ubicación Propuesta: Redland")
+    col1, col2 = st.columns(2)
 
-with col1:
-    st.subheader("Ventajas Clave")
-    st.dataframe(
-        ubicacion[ubicacion['Variable'].str.contains('Ventaja')],
-        column_config={
-            "Variable": "Beneficio",
-            "Valor": "Detalle"
-        },
-        hide_index=True
-    )
+    with col1:
+        st.subheader("Ventajas Clave")
+        st.dataframe(
+            ubicacion[ubicacion['Variable'].str.contains('Ventaja')],
+            column_config={
+                "Variable": "Beneficio",
+                "Valor": "Detalle"
+            },
+            hide_index=True
+        )
 
-with col2:
-    st.subheader("Consideraciones")
-    st.dataframe(
-        ubicacion[ubicacion['Variable'].str.contains('Desafío|Requisito')],
-        column_config={
-            "Variable": "Aspecto",
-            "Valor": "Detalle"
-        },
-        hide_index=True
-    )
+    with col2:
+        st.subheader("Consideraciones")
+        st.dataframe(
+            ubicacion[ubicacion['Variable'].str.contains('Desafío|Requisito')],
+            column_config={
+                "Variable": "Aspecto",
+                "Valor": "Detalle"
+            },
+            hide_index=True
+        )
 
 # --- Sección 5: Estrategias de Marketing ---
-st.header("📈 ROI por Red Social")
-fig4 = px.bar(
-    marketing_roi,
-    x="Red Social",
-    y="ROI (%)",
-    color="Ingresos Generados (USD)",
-    title="Retorno de Inversión por Plataforma (2025)"
-)
-st.plotly_chart(fig4, use_container_width=True)
+if marketing_roi is not None:
+    st.header("📈 ROI por Red Social")
+    fig4 = px.bar(
+        marketing_roi,
+        x="Red Social",
+        y="ROI (%)",
+        color="Ingresos Generados (USD)",
+        title="Retorno de Inversión por Plataforma (2025)"
+    )
+    st.plotly_chart(fig4, use_container_width=True)
 
 # --- Datos completos (opcional) ---
 with st.expander("📁 Ver todos los datos crudos"):
     tabs = st.tabs(["Mercado Hotelero", "Visitantes", "Financiamiento", "Clientes", "Ubicación"])
     with tabs[0]:
-        st.dataframe(mercado_hotelero)
+        if mercado_hotelero is not None:
+            st.dataframe(mercado_hotelero)
     with tabs[1]:
-        st.dataframe(visitantes)
+        if visitantes is not None:
+            st.dataframe(visitantes)
     with tabs[2]:
-        st.dataframe(financiamiento)
+        if financiamiento is not None:
+            st.dataframe(financiamiento)
     with tabs[3]:
-        st.dataframe(clientes)
+        if clientes is not None:
+            st.dataframe(clientes)
     with tabs[4]:
-        st.dataframe(ubicacion)
+        if ubicacion is not None:
+            st.dataframe(ubicacion)
 
 # --- Footer ---
 st.markdown("---")
